@@ -22,6 +22,7 @@ import { shouldTranscodeGif } from '../helpers/giftranscode';
 import { normalizeLanguage } from '../helpers/language';
 import { getVideoTranscodeDomain, getVideoTranscodeDomainBluesky } from '../helpers/transcode';
 import { constructTikTokVideo } from '../providers/tiktok/conversation';
+import { constructKarotterThread } from '../providers/karotter/conversation';
 import { InputFlags } from '../types/types';
 
 /**
@@ -142,6 +143,14 @@ export const handleStatus = async (
     const requestUrl = new URL(c.req.url);
     const proxyBase = `${requestUrl.protocol}//${requestUrl.host}`;
     thread = await constructTikTokVideo(statusId, proxyBase, userAgent);
+  } else if (provider === DataProvider.Karotter) {
+    thread = await constructKarotterThread(
+      statusId,
+      authorHandle,
+      fetchWithThreads,
+      c,
+      useActivity ? undefined : useLanguage
+    );
   } else {
     return returnError(c, Strings.ERROR_API_FAIL);
   }
@@ -183,6 +192,8 @@ export const handleStatus = async (
   if (status === null) {
     if (provider === DataProvider.Bsky) {
       return returnError(c, Strings.ERROR_BLUESKY_POST_NOT_FOUND);
+    } else if (provider === DataProvider.Karotter) {
+      return returnError(c, 'カロートが見つかりません');
     } else {
       return returnError(c, Strings.ERROR_TWEET_NOT_FOUND);
     }
@@ -195,6 +206,8 @@ export const handleStatus = async (
     case 404:
       if (provider === DataProvider.Bsky) {
         return returnError(c, Strings.ERROR_BLUESKY_POST_NOT_FOUND);
+      } else if (provider === DataProvider.Karotter) {
+        return returnError(c, 'カロートが見つかりません');
       } else {
         return returnError(c, Strings.ERROR_TWEET_NOT_FOUND);
       }
@@ -349,6 +362,11 @@ export const handleStatus = async (
       `<link rel="canonical" href="${Constants.BSKY_ROOT}/profile/${status.author.screen_name}/post/${status.id}"/>`,
       `<meta property="og:url" content="${Constants.BSKY_ROOT}/profile/${status.author.screen_name}/post/${status.id}"/>`
     );
+  } else if (status.provider === DataProvider.Karotter) {
+    headers.push(
+      `<link rel="canonical" href="${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`,
+      `<meta property="og:url" content="${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`
+    );
   }
 
   if (!flags.gallery) {
@@ -370,6 +388,10 @@ export const handleStatus = async (
     } else if (provider === DataProvider.Bsky) {
       headers.push(
         `<meta http-equiv="refresh" content="0;url=${Constants.BSKY_ROOT}/profile/${status.author.screen_name}/post/${status.id}"/>`
+      );
+    } else if (provider === DataProvider.Karotter) {
+      headers.push(
+        `<meta http-equiv="refresh" content="0;url=${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`
       );
     }
   }
@@ -775,6 +797,9 @@ export const handleStatus = async (
         break;
       case DataProvider.TikTok:
         base = Constants.STANDARD_TIKTOK_DOMAIN_LIST[0];
+        break;
+      case DataProvider.Karotter:
+        base = Constants.STANDARD_KAROTTER_DOMAIN_LIST[0];
         break;
       default:
         base = Constants.STANDARD_DOMAIN_LIST[0];

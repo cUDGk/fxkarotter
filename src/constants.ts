@@ -3,6 +3,7 @@ export const Constants = {
   STANDARD_DOMAIN_LIST: STANDARD_DOMAIN_LIST.split(','),
   STANDARD_BSKY_DOMAIN_LIST: STANDARD_BSKY_DOMAIN_LIST.split(','),
   STANDARD_TIKTOK_DOMAIN_LIST: STANDARD_TIKTOK_DOMAIN_LIST.split(','),
+  STANDARD_KAROTTER_DOMAIN_LIST: (typeof STANDARD_KAROTTER_DOMAIN_LIST !== 'undefined' ? STANDARD_KAROTTER_DOMAIN_LIST : 'fxkarotter.com').split(','),
   DIRECT_MEDIA_DOMAINS: DIRECT_MEDIA_DOMAINS.split(','),
   TEXT_ONLY_DOMAINS: TEXT_ONLY_DOMAINS.split(','),
   INSTANT_VIEW_DOMAINS: INSTANT_VIEW_DOMAINS.split(','),
@@ -28,6 +29,8 @@ export const Constants = {
   BSKY_API_ROOT: 'https://public.api.bsky.app',
   TIKTOK_ROOT: 'https://www.tiktok.com',
   TIKTOK_API_HOST: 'https://api16-normal-c-useast1a.tiktokv.com',
+  KAROTTER_ROOT: 'https://karotter.com',
+  KAROTTER_API_ROOT: 'https://api.karotter.com/api',
   NATIVE_MULTI_IMAGE_UA_REGEX: /discordbot\/|matrixpreviewbot/gi,
   BOT_UA_REGEX:
     /bot|facebook|embed|got|firefox\/92|firefox\/38|chrome\/96\.0\.4664\.110|curl|wget|go-http|yahoo|generator|whatsapp|revoltchat|preview|link|proxy|vkshare|images|analyzer|index|crawl|spider|python|node|deno|mastodon|http\.rb|ruby|bun\/|fiddler|iframely|steamchaturllookup|bluesky|matrix-media-repo|cardyb|resolver|util|feedly|rss|reader|atom|thunderbird/gi,

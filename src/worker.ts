@@ -13,6 +13,7 @@ import { cacheMiddleware } from './caches';
 import { bsky } from './realms/bluesky/router';
 import { getBranding } from './helpers/branding';
 import { tiktok } from './realms/tiktok/router';
+import { karotter } from './realms/karotter/router';
 
 const noCache = 'max-age=0, no-cache, no-store, must-revalidate';
 const embeddingClientRegex =
@@ -54,6 +55,9 @@ export const app = new Hono<{
     } else if (Constants.STANDARD_TIKTOK_DOMAIN_LIST.includes(baseHostName)) {
       realm = 'tiktok';
       console.log('TikTok realm');
+    } else if (Constants.STANDARD_KAROTTER_DOMAIN_LIST.includes(baseHostName)) {
+      realm = 'karotter';
+      console.log('Karotter realm');
     } else if (
       baseHostName.includes('workers.dev') ||
       baseHostName.includes('localhost') ||
@@ -163,6 +167,7 @@ app.route(`/api`, api);
 app.route(`/twitter`, twitter);
 app.route(`/bsky`, bsky);
 app.route(`/tiktok`, tiktok);
+app.route(`/karotter`, karotter);
 
 app.all('/error', async c => {
   c.header('cache-control', noCache);
