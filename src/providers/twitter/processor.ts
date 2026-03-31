@@ -235,29 +235,14 @@ export const buildAPITwitterStatus = async (
   // }
   apiStatus.raw_text = {
     text: status.legacy.full_text,
+    display_text_range: status.legacy.display_text_range,
     facets: []
   };
   // if (threadAuthor && threadAuthor.id !== apiUser.id) {
-  apiStatus.author = {
-    id: apiUser.id,
-    name: apiUser.name,
-    screen_name: apiUser.screen_name,
-    avatar_url: apiUser.avatar_url?.replace?.('_normal', '_200x200') ?? null,
-    banner_url: apiUser.banner_url,
-    description: apiUser.description,
-    raw_description: apiUser.raw_description,
-    location: apiUser.location,
-    url: apiUser.url,
-    followers: apiUser.followers,
-    following: apiUser.following,
-    joined: apiUser.joined,
-    statuses: apiUser.statuses,
-    likes: apiUser.likes,
-    media_count: apiUser.media_count,
-    protected: apiUser.protected,
-    birthday: apiUser.birthday,
-    website: apiUser.website
-  };
+  apiStatus.author = apiUser;
+  if (apiStatus.author.avatar_url) {
+    apiStatus.author.avatar_url = apiStatus.author.avatar_url.replace?.('_normal', '_200x200') ?? null;
+  }
   // }
   apiStatus.replies = status.legacy.reply_count;
   if (legacyAPI) {
@@ -296,6 +281,8 @@ export const buildAPITwitterStatus = async (
 
   if (noteTweetText) {
     apiStatus.raw_text.text = noteTweetText;
+    // Note tweets don't have this and don't need it since they already exclude preceding mentions etc
+    apiStatus.raw_text.display_text_range = [0, noteTweetText.length];
     status.legacy.entities.urls = status.note_tweet?.note_tweet_results?.result?.entity_set.urls;
     status.legacy.entities.hashtags =
       status.note_tweet?.note_tweet_results?.result?.entity_set.hashtags;
@@ -471,7 +458,7 @@ export const buildAPITwitterStatus = async (
   } else if (replyScreenName && replyStatusId) {
     apiStatus.replying_to = {
       screen_name: replyScreenName,
-      post: replyStatusId
+      status: replyStatusId
     };
   } else {
     apiStatus.replying_to = null;

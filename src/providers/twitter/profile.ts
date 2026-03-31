@@ -110,7 +110,11 @@ export const convertToApiUser = (user: GraphQLUser, legacyAPI = false): APIUser 
   /* Fun fact: verification.verified always returns false in Twitter GraphQL even if the account is verified.
      They moved legacy.verified into verification.verified but didn't bother to reimplement it
      with Twitter Blue / X Premium verification */
-  if (user.verification?.is_blue_verified || user.is_blue_verified) {
+  if (
+    user.verification?.is_blue_verified ||
+    user.is_blue_verified ||
+    user.verification?.verified_type
+  ) {
     apiUser.verification = {
       verified: true,
       verified_at: null,
@@ -211,7 +215,9 @@ export const mergeUserProfileAboutData = (
   user: APIUser,
   aboutResponse: UserProfileAboutResponse
 ): APIUser => {
-  const result = aboutResponse?.data?.user_rest_result_by_rest_id?.result;
+  const result =
+    aboutResponse?.data?.user_result_by_rest_id?.result ??
+    aboutResponse?.data?.user_rest_result_by_rest_id?.result;
 
   if (!result) {
     return user;
