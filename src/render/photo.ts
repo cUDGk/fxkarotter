@@ -47,12 +47,16 @@ export const renderPhoto = (
     photo = photo as APIPhoto;
     instructions.addHeaders = [
       `<meta property="twitter:image" content="${photo.url}"/>`,
-      `<meta property="og:image" content="${photo.url}"/>`,
-      `<meta property="twitter:image:width" content="${photo.width}"/>`,
-      `<meta property="twitter:image:height" content="${photo.height}"/>`,
-      `<meta property="og:image:width" content="${photo.width}"/>`,
-      `<meta property="og:image:height" content="${photo.height}"/>`
+      `<meta property="og:image" content="${photo.url}"/>`
     ];
+    if (photo.width && photo.height) {
+      instructions.addHeaders.push(
+        `<meta property="twitter:image:width" content="${photo.width}"/>`,
+        `<meta property="twitter:image:height" content="${photo.height}"/>`,
+        `<meta property="og:image:width" content="${photo.width}"/>`,
+        `<meta property="og:image:height" content="${photo.height}"/>`
+      );
+    }
     if (photo.altText) {
       instructions.addHeaders.push(
         `<meta property="twitter:image:alt" content="${photo.altText}"/>`,

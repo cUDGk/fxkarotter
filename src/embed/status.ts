@@ -755,7 +755,7 @@ export const handleStatus = async (
     headers.push(
       `<link rel="alternate" href="{base}/owoembed?text={text}&status={status}&author={author}{provider}" type="application/json+oembed" title="{name}">`.format(
         {
-          base: `https://${getBranding(c).domains[0]}`,
+          base: `https://${new URL(c.req.url).hostname}`,
           text: flags.gallery
             ? status.author.name
             : encodeURIComponent(truncateWithEllipsis(authorText, 255)),

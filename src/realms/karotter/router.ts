@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { trimTrailingSlash } from 'hono/trailing-slash';
 import { karotterStatusRequest } from './routes/status';
 import { karotterProfileRequest } from './routes/profile';
+import { oembed } from '../api/routes/oembed';
 import { versionRoute } from '../common/version';
 import { Constants } from '../../constants';
 
@@ -21,6 +22,7 @@ karotter.get('/:handle/status/:id', karotterStatusRequest);
 karotter.get('/:handle/status/:id/:language', karotterStatusRequest);
 karotter.get('/profile/:handle', karotterProfileRequest);
 karotter.get('/@:handle', karotterProfileRequest);
+karotter.get('/owoembed', oembed);
 karotter.get('/version', c => versionRoute(c));
 
 karotter.all('*', async c => {
