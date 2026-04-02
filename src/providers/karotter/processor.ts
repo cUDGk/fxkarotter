@@ -2,6 +2,7 @@ import { Context } from 'hono';
 import { Constants } from '../../constants';
 import { DataProvider } from '../../enum';
 import { KarotterRawPost } from './conversation';
+import type { APIKarotterStatus } from '../../types/apiStatus';
 
 const resolveMediaUrl = (url: string): string => {
   if (!url) return '';
@@ -12,8 +13,8 @@ const resolveMediaUrl = (url: string): string => {
 export const buildAPIKarotterPost = (
   _c: Context,
   post: KarotterRawPost
-): APIStatus => {
-  const apiStatus: APIStatus = {} as APIStatus;
+): APIKarotterStatus => {
+  const apiStatus: APIKarotterStatus = {} as APIKarotterStatus;
 
   apiStatus.id = String(post.id);
   apiStatus.text = post.content || '';
@@ -94,6 +95,8 @@ export const buildAPIKarotterPost = (
   apiStatus.likes = post.likesCount || 0;
   apiStatus.reposts = post.rekarotsCount || 0;
   apiStatus.replies = post.repliesCount || 0;
+  apiStatus.views = post.viewsCount || 0;
+  apiStatus.bookmarks = post.bookmarksCount || 0;
 
   /* Quoted post */
   if (post.quotedPost) {

@@ -71,6 +71,12 @@ export interface APITikTokStatus extends APIStatus {
   views?: number | null;
 }
 
+export interface APIKarotterStatus extends APIStatus {
+  provider: DataProvider.Karotter;
+  views?: number | null;
+  bookmarks?: number | null;
+}
+
 export interface SocialPost {
   status: APIStatus | APITwitterStatus | null;
   author: APIUser | null;

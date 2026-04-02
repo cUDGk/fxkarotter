@@ -12,7 +12,12 @@ export const karotterStatusRequest = async (c: Context) => {
 
   const userAgent = c.req.header('User-Agent') || '';
   const url = new URL(c.req.url);
-  const flags: InputFlags = {};
+  const flags: InputFlags = { noActivity: true };
+
+  /* Build the original karotter.com URL for redirects */
+  const karotterUrl = handle
+    ? `${Constants.KAROTTER_ROOT}/@${handle}/posts/${actualId}`
+    : `${Constants.KAROTTER_ROOT}/posts/${actualId}`;
 
   if (url.pathname.match(/\/posts\/\d+\.(mp4|png|jpe?g|gifv?)/g)) {
     console.log('Direct media request by extension');
@@ -48,7 +53,7 @@ export const karotterStatusRequest = async (c: Context) => {
     if (statusResponse) {
       if (!isBotUA && !flags.api && !flags.direct) {
         return c.redirect(
-          `${Constants.KAROTTER_ROOT}/@${handle}/posts/${actualId}`,
+          karotterUrl,
           302
         );
       }
@@ -60,7 +65,7 @@ export const karotterStatusRequest = async (c: Context) => {
   } else {
     console.log('Matched human UA', userAgent);
     return c.redirect(
-      `${Constants.KAROTTER_ROOT}/@${handle}/posts/${actualId}`,
+      karotterUrl,
       302
     );
   }

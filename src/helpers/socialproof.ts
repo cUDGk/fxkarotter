@@ -1,6 +1,7 @@
 import { Constants } from '../constants';
 import { DataProvider } from '../enum';
 import type { APITwitterStatus } from '../realms/api/schemas';
+import type { APIKarotterStatus } from '../types/apiStatus';
 import { formatNumber } from './utils';
 
 export const getSocialProof = (status: APIStatus): string | null => {
@@ -8,6 +9,8 @@ export const getSocialProof = (status: APIStatus): string | null => {
 
   if (status.provider === DataProvider.Twitter || status.provider === DataProvider.TikTok) {
     views = (status as APITwitterStatus | APITikTokStatus).views || 0;
+  } else if (status.provider === DataProvider.Karotter) {
+    views = (status as APIKarotterStatus).views || 0;
   }
   /* Build out reply, repost, like counts */
   if (status.likes > 0 || status.reposts > 0 || status.replies > 0 || (views ? views > 0 : false)) {
@@ -37,6 +40,8 @@ export const getActivitySocialProof = (status: APIStatus): string | null => {
 
   if (status.provider === DataProvider.Twitter || status.provider === DataProvider.TikTok) {
     views = (status as APITwitterStatus | APITikTokStatus).views || 0;
+  } else if (status.provider === DataProvider.Karotter) {
+    views = (status as APIKarotterStatus).views || 0;
   }
   /* Build out reply, repost, like counts */
   if (status.likes > 0 || status.reposts > 0 || status.replies > 0 || (views ? views > 0 : false)) {
