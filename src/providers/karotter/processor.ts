@@ -3,6 +3,7 @@ import { Constants } from '../../constants';
 import { DataProvider } from '../../enum';
 import { KarotterRawPost } from './conversation';
 import type { APIKarotterStatus } from '../../types/apiStatus';
+import { getKarotterRoot } from '../../helpers/karotter';
 
 const resolveMediaUrl = (url: string): string => {
   if (!url) return '';
@@ -11,10 +12,11 @@ const resolveMediaUrl = (url: string): string => {
 };
 
 export const buildAPIKarotterPost = (
-  _c: Context,
+  c: Context,
   post: KarotterRawPost
 ): APIKarotterStatus => {
   const apiStatus: APIKarotterStatus = {} as APIKarotterStatus;
+  const kRoot = getKarotterRoot(c);
 
   apiStatus.id = String(post.id);
   apiStatus.text = post.content || '';
@@ -33,7 +35,7 @@ export const buildAPIKarotterPost = (
       following: 0,
       media_count: 0,
       likes: 0,
-      url: `${Constants.KAROTTER_ROOT}/@${post.author.username}`,
+      url: `${kRoot}/@${post.author.username}`,
       protected: post.author.isPrivate,
       statuses: 0,
       joined: '',
@@ -100,7 +102,7 @@ export const buildAPIKarotterPost = (
 
   /* Quoted post */
   if (post.quotedPost) {
-    apiStatus.quote = buildAPIKarotterPost(_c, post.quotedPost);
+    apiStatus.quote = buildAPIKarotterPost(c, post.quotedPost);
     if (apiStatus.quote.embed_card && !apiStatus.embed_card) {
       apiStatus.embed_card = apiStatus.quote.embed_card;
     }
@@ -120,7 +122,7 @@ export const buildAPIKarotterPost = (
   }
 
   apiStatus.source = 'Karotter';
-  apiStatus.url = `${Constants.KAROTTER_ROOT}/@${post.author.username}/posts/${post.id}`;
+  apiStatus.url = `${kRoot}/@${post.author.username}/posts/${post.id}`;
   apiStatus.provider = DataProvider.Karotter;
   apiStatus.lang = 'ja';
 

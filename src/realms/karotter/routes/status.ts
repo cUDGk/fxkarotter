@@ -4,6 +4,7 @@ import { DataProvider } from '../../../enum';
 import { Constants } from '../../../constants';
 import { Strings } from '../../../strings';
 import { InputFlags } from '../../../types/types';
+import { getKarotterRoot } from '../../../helpers/karotter';
 
 export const karotterStatusRequest = async (c: Context) => {
   console.log('Karotter status request');
@@ -14,10 +15,11 @@ export const karotterStatusRequest = async (c: Context) => {
   const url = new URL(c.req.url);
   const flags: InputFlags = { noActivity: true };
 
-  /* Build the original karotter.com URL for redirects */
+  const root = getKarotterRoot(c);
+  /* Build the original karotter URL for redirects */
   const karotterUrl = handle
-    ? `${Constants.KAROTTER_ROOT}/@${handle}/posts/${actualId}`
-    : `${Constants.KAROTTER_ROOT}/posts/${actualId}`;
+    ? `${root}/@${handle}/posts/${actualId}`
+    : `${root}/posts/${actualId}`;
 
   if (url.pathname.match(/\/posts\/\d+\.(mp4|png|jpe?g|gifv?)/g)) {
     console.log('Direct media request by extension');

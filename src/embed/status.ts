@@ -24,6 +24,7 @@ import { getVideoTranscodeDomain, getVideoTranscodeDomainBluesky } from '../help
 import { constructTikTokVideo } from '../providers/tiktok/conversation';
 import { constructKarotterThread } from '../providers/karotter/conversation';
 import { InputFlags } from '../types/types';
+import { getKarotterRoot } from '../helpers/karotter';
 
 /**
  * Check if the tweet text is essentially just an article URL with no meaningful additional content.
@@ -363,9 +364,10 @@ export const handleStatus = async (
       `<meta property="og:url" content="${Constants.BSKY_ROOT}/profile/${status.author.screen_name}/post/${status.id}"/>`
     );
   } else if (status.provider === DataProvider.Karotter) {
+    const kRoot = getKarotterRoot(c);
     headers.push(
-      `<link rel="canonical" href="${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`,
-      `<meta property="og:url" content="${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`
+      `<link rel="canonical" href="${kRoot}/@${status.author.screen_name}/posts/${status.id}"/>`,
+      `<meta property="og:url" content="${kRoot}/@${status.author.screen_name}/posts/${status.id}"/>`
     );
   }
 
@@ -391,7 +393,7 @@ export const handleStatus = async (
       );
     } else if (provider === DataProvider.Karotter) {
       headers.push(
-        `<meta http-equiv="refresh" content="0;url=${Constants.KAROTTER_ROOT}/@${status.author.screen_name}/posts/${status.id}"/>`
+        `<meta http-equiv="refresh" content="0;url=${getKarotterRoot(c)}/@${status.author.screen_name}/posts/${status.id}"/>`
       );
     }
   }

@@ -1,6 +1,6 @@
 # FxKarotter
 
-[Karotter](https://karotter.com) の投稿をDiscordやTelegramで綺麗に埋め込み表示するサービス。
+[Karotter](https://karotter.com)（[karotter.jp](https://karotter.jp)）の投稿をDiscordやTelegramで綺麗に埋め込み表示するサービス。
 
 [FxEmbed/FxEmbed](https://github.com/FxEmbed/FxEmbed) をベースにKarotter対応を追加したフォーク。
 
@@ -21,7 +21,7 @@ FxKarotter: https://fxkarotter.com/username/status/12345
 
 DiscordやTelegramに貼ると、投稿内容・画像・エンゲージメント情報が埋め込み表示される。
 
-通常のブラウザでアクセスした場合は元のKarotterページにリダイレクトされる。
+通常のブラウザでアクセスした場合は元のKarotterページにリダイレクトされる（fxkarotter.jp → karotter.jp、fxkarotter.com → karotter.com）。
 
 ## 対応機能
 
@@ -30,7 +30,7 @@ DiscordやTelegramに貼ると、投稿内容・画像・エンゲージメン�
 - 投稿者のプロフィール情報（アバター、表示名）
 - エンゲージメント表示（💬 リプライ / 🔁 リカロート / ❤️ いいね / 👁️ 閲覧数）
 - プロフィールページの埋め込み（`/profile/username`）
-- 人間のアクセスはkarotter.comへリダイレクト
+- 人間のアクセスは対応するKarotterドメインへリダイレクト（.jp→.jp、.com→.com）
 
 ## 対応URL形式
 

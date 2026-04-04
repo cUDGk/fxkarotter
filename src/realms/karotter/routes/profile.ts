@@ -1,19 +1,21 @@
 import { Context } from 'hono';
 import { Constants } from '../../../constants';
+import { getKarotterRoot } from '../../../helpers/karotter';
 
 export const karotterProfileRequest = async (c: Context) => {
   const { handle } = c.req.param();
   const userAgent = c.req.header('User-Agent') || '';
   const isBotUA = userAgent.match(Constants.BOT_UA_REGEX) !== null;
+  const root = getKarotterRoot(c);
 
   if (!isBotUA) {
-    return c.redirect(`${Constants.KAROTTER_ROOT}/profile/${handle}`, 302);
+    return c.redirect(`${root}/profile/${handle}`, 302);
   }
 
   try {
     const res = await fetch(`${Constants.KAROTTER_API_ROOT}/users/${handle}`);
     if (!res.ok) {
-      return c.redirect(`${Constants.KAROTTER_ROOT}/profile/${handle}`, 302);
+      return c.redirect(`${root}/profile/${handle}`, 302);
     }
 
     const data = (await res.json()) as {
@@ -45,7 +47,7 @@ export const karotterProfileRequest = async (c: Context) => {
       `<meta charset="utf-8"/>`,
       `<meta property="og:title" content="${user.displayName} (@${user.username})"/>`,
       `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}"/>`,
-      `<meta property="og:url" content="${Constants.KAROTTER_ROOT}/profile/${user.username}"/>`,
+      `<meta property="og:url" content="${root}/profile/${user.username}"/>`,
       `<meta property="og:site_name" content="FxKarotter"/>`,
       `<meta property="og:type" content="profile"/>`,
       `<meta property="theme-color" content="#6363ff"/>`,
@@ -60,7 +62,7 @@ export const karotterProfileRequest = async (c: Context) => {
     }
 
     headers.push(
-      `<meta http-equiv="refresh" content="0;url=${Constants.KAROTTER_ROOT}/profile/${user.username}"/>`,
+      `<meta http-equiv="refresh" content="0;url=${root}/profile/${user.username}"/>`,
       `</head>`,
       `<body></body>`,
       `</html>`
@@ -68,6 +70,6 @@ export const karotterProfileRequest = async (c: Context) => {
 
     return c.html(headers.join('\n'));
   } catch (_e) {
-    return c.redirect(`${Constants.KAROTTER_ROOT}/profile/${handle}`, 302);
+    return c.redirect(`${root}/profile/${handle}`, 302);
   }
 };
