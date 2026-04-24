@@ -1,4 +1,20 @@
+<div align="center">
+
 # FxKarotter
+
+### Karotter 投稿の Discord / Telegram 等での埋め込みを修正する Cloudflare Worker
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?style=flat&logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green?style=flat)](LICENSE)
+
+**URL ドメインを差し替えるだけで Karotter 投稿がプレビュー付きで貼れる。**
+
+---
+
+</div>
+
+## 概要
 
 [Karotter](https://karotter.com)（[karotter.jp](https://karotter.jp)）の投稿をDiscordやTelegramで綺麗に埋め込み表示するサービス。
 
