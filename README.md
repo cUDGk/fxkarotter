@@ -22,8 +22,8 @@
 
 ## リンク
 
-- **fxkarotter.com**: [https://fxkarotter.com](https://fxkarotter.com)
-- **fxkarotter.jp**: [https://fxkarotter.jp](https://fxkarotter.jp)
+- **fxkarotter.com**: [https://fxkarotter.com/howtouse](https://fxkarotter.com/howtouse)
+- **fxkarotter.jp**: [https://fxkarotter.jp/howtouse](https://fxkarotter.jp/howtouse)
 
 ## 使い方
 
