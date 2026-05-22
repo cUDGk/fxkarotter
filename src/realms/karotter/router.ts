@@ -198,6 +198,15 @@ karotter.get('/:handle/posts/:id/:language', karotterStatusRequest);
 /* Direct status by ID */
 karotter.get('/status/:id', karotterStatusRequest);
 
+/* Share links: Karotter appends /share for its crawler-facing SSR embed page.
+   The trailing /share is a literal marker, not a language code — register it as
+   a static segment so it wins over the /:language routes above. */
+karotter.get('/@:handle/posts/:id/share', karotterStatusRequest);
+karotter.get('/:handle/posts/:id/share', karotterStatusRequest);
+karotter.get('/:handle/status/:id/share', karotterStatusRequest);
+karotter.get('/posts/:id/share', karotterStatusRequest);
+karotter.get('/status/:id/share', karotterStatusRequest);
+
 /* Profile patterns */
 karotter.get('/profile/:handle', karotterProfileRequest);
 karotter.get('/@:handle', karotterProfileRequest);
